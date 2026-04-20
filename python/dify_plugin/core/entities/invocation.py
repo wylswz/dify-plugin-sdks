@@ -17,6 +17,7 @@ class InvokeType(Enum):
     UploadFile = "upload_file"
     SYSTEM_SUMMARY = "system_summary"
     FetchApp = "fetch_app"
+    SubmitToolInterruptResult = "submit_tool_interrupt_result"
 
     @classmethod
     def value_of(cls, value: str) -> "InvokeType":
