@@ -8,6 +8,7 @@ from typing import Any
 from pydantic import (
     BaseModel,
     Field,
+    ValidationInfo,
     field_serializer,
     field_validator,
     model_validator,
@@ -72,6 +73,12 @@ class InvokeMessage(BaseModel):
         data: Mapping[str, Any] = Field(..., description="Detailed log data")
         metadata: Mapping[LogMetadata, Any] | None = Field(default=None, description="The metadata of the log")
 
+    class InterruptMessage(BaseModel):
+        token: str = Field(..., description="Opaque handle for resume / correlation")
+
+        def to_dict(self):
+            return {"token": self.token}
+
     class RetrieverResourceMessage(BaseModel):
         class RetrieverResource(BaseModel):
             """
@@ -110,6 +117,7 @@ class InvokeMessage(BaseModel):
         BLOB_CHUNK = "blob_chunk"
         LOG = "log"
         RETRIEVER_RESOURCES = "retriever_resources"
+        INTERRUPT = "interrupt"
 
     type: MessageType
     # TODO: pydantic will validate and construct the message one by one, until it encounters a correct type
@@ -122,16 +130,22 @@ class InvokeMessage(BaseModel):
         | BlobChunkMessage
         | LogMessage
         | RetrieverResourceMessage
+        | InterruptMessage
         | None
     )
     meta: dict | None = None
 
     @field_validator("message", mode="before")
     @classmethod
-    def decode_blob_message(cls, v):
+    def decode_blob_message(cls, v, info: ValidationInfo):
         if isinstance(v, dict) and "blob" in v:
             with contextlib.suppress(Exception):
                 v["blob"] = base64.b64decode(v["blob"])
+        if info.data and isinstance(info.data, dict) and isinstance(v, dict):
+            raw_type = info.data.get("type")
+            type_val = getattr(raw_type, "value", raw_type)
+            if type_val == cls.MessageType.INTERRUPT.value and "token" not in v:
+                raise ValueError("Interrupt message requires 'token'")
         return v
 
     @field_serializer("message")

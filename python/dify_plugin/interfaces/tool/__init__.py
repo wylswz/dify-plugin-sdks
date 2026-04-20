@@ -147,6 +147,15 @@ class ToolLike(ABC, Generic[T]):
             ),
         )
 
+    def create_interrupt_message(self, token: str) -> T:
+        """
+        Pause the workflow run with an opaque resume handle (streamed to Dify as an interrupt chunk).
+        """
+        return self.response_type(
+            type=InvokeMessage.MessageType.INTERRUPT,
+            message=InvokeMessage.InterruptMessage(token=token),
+        )
+
     def finish_log_message(
         self,
         log: T,
