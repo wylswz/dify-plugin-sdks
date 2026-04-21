@@ -1,0 +1,19 @@
+# Regenerate requirements.txt (for dify-plugin-daemon pip install) after lock changes:
+#   uv export --format requirements-txt --no-hashes -o requirements.txt
+
+[project]
+name = "interrupt-debug"
+version = "0.0.1"
+description = "Local dev example: tool interrupt debugging (not for publishing)."
+requires-python = ">=3.12"
+dependencies = [
+    "dify_plugin",
+]
+
+[tool.uv]
+# Plugin sources are flat (provider/, tools/); only pull deps into .venv.
+package = false
+
+[tool.uv.sources]
+# Parent package: dify-plugin-sdks/python (editable local SDK)
+dify_plugin = { path = "../..", editable = true }

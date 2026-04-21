@@ -1,0 +1,45 @@
+identity:
+  name: pause_interrupt
+  author: Dify
+  label:
+    en_US: Pause (interrupt)
+    zh_Hans: 暂停（中断）
+description:
+  human:
+    en_US: >-
+      Streams optional text, then emits an INTERRUPT with a resume token. The workflow
+      should pause until the token is satisfied via submit_interrupt_result or Inner API.
+    zh_Hans: >-
+      可选地输出一段文本，然后发送带恢复 token 的 INTERRUPT；工作流应暂停，直到通过
+      submit_interrupt_result 或 Inner API 提交该 token 对应的结果。
+  llm: >-
+    Pause the workflow with an interrupt token after optional status text. Use for
+    debugging interrupt / resume.
+parameters:
+  - name: preface
+    type: string
+    required: false
+    label:
+      en_US: Preface text
+      zh_Hans: 中断前文本
+    human_description:
+      en_US: Optional text streamed before the interrupt chunk.
+      zh_Hans: 在 INTERRUPT 之前可选输出的文本。
+    llm_description: Optional short status line before interrupt.
+    form: llm
+  - name: token
+    type: string
+    required: false
+    label:
+      en_US: Custom token
+      zh_Hans: 自定义 token
+    human_description:
+      en_US: >-
+        If empty, a random hex token is generated. Set to reuse a known token only
+        when you know what you are doing.
+      zh_Hans: 留空则自动生成随机 hex token；仅在明确场景下可手动指定。
+    llm_description: Opaque resume handle; leave empty for auto.
+    form: llm
+extra:
+  python:
+    source: tools/pause_interrupt.py

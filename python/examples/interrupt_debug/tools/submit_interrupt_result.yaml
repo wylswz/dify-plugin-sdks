@@ -1,0 +1,56 @@
+identity:
+  name: submit_interrupt_result
+  author: Dify
+  label:
+    en_US: Submit interrupt result
+    zh_Hans: 提交中断恢复结果
+description:
+  human:
+    en_US: >-
+      Calls Dify backwards invoke submit_tool_interrupt_result with the given token and
+      payload. Use after a pause_interrupt run to resume the workflow (same plugin
+      daemon session / deployment as the paused run).
+    zh_Hans: >-
+      使用给定 token 与负载调用 Dify 的 submit_tool_interrupt_result（backwards invoke）。
+      在 pause_interrupt 暂停后用于触发恢复（需与暂停时同一套插件守护进程/部署环境）。
+  llm: >-
+    Submit resume payload for a prior interrupt token via plugin backwards invocation.
+parameters:
+  - name: token
+    type: string
+    required: true
+    label:
+      en_US: Interrupt token
+      zh_Hans: 中断 token
+    human_description:
+      en_US: The token from the paused tool node (INTERRUPT chunk / variable pool).
+      zh_Hans: 暂停工具节点返回的 token（INTERRUPT 分片或 variable pool 中的值）。
+    llm_description: Opaque interrupt token from the paused run.
+    form: llm
+  - name: result_text
+    type: string
+    required: false
+    label:
+      en_US: Result text
+      zh_Hans: 结果文本
+    human_description:
+      en_US: Optional plain text merged into tool output as text.
+      zh_Hans: 可选，作为工具输出的文本部分。
+    llm_description: Optional resume text.
+    form: llm
+  - name: result_json
+    type: string
+    required: false
+    label:
+      en_US: Result JSON
+      zh_Hans: 结果 JSON
+    human_description:
+      en_US: >-
+        Optional JSON object string, e.g. {"status":"ok","answer":42}. Parsed and passed
+        as the json field of the interrupt result.
+      zh_Hans: 可选 JSON 对象字符串，例如 {"status":"ok"}，解析后作为中断结果的 json 字段。
+    llm_description: Optional JSON string for structured resume data.
+    form: llm
+extra:
+  python:
+    source: tools/submit_interrupt_result.py

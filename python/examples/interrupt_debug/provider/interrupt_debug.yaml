@@ -1,0 +1,28 @@
+identity:
+  author: Dify
+  name: interrupt_debug
+  label:
+    en_US: Interrupt debug
+    zh_Hans: Interrupt 调试
+  description:
+    en_US: Debug tool interrupt streaming and resume callbacks.
+    zh_Hans: 调试工具中断流式与恢复回调。
+  icon: icon.svg
+  tags:
+    - utilities
+credentials_for_provider:
+  noop_note:
+    type: text-input
+    required: false
+    label:
+      en_US: Optional note (unused)
+      zh_Hans: 可选备注（占位，无实际作用）
+    placeholder:
+      en_US: e.g. local-dev
+      zh_Hans: 例如 local-dev
+tools:
+  - tools/pause_interrupt.yaml
+  - tools/submit_interrupt_result.yaml
+extra:
+  python:
+    source: provider/interrupt_debug.py
