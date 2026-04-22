@@ -121,6 +121,7 @@ class Session:
         endpoint_id: str | None = None,
         context: SessionContext | dict | None = None,
         max_invocation_timeout: int = 250,
+        dify_plugin_server_key: str | None = None,
     ) -> None:
         # current session id
         self.session_id: str = session_id
@@ -158,6 +159,9 @@ class Session:
         # max invocation timeout (seconds)
         self.max_invocation_timeout: int = max_invocation_timeout
 
+        # DIFY_PLUGIN_SERVER_KEY: same as daemon SERVER_KEY, for POST /v2/invoke/.../submit-tool-interrupt-result
+        self.dify_plugin_server_key: str | None = dify_plugin_server_key
+
         # register invocations
         self._register_invocations()
 
@@ -183,6 +187,7 @@ class Session:
             install_method=None,
             dify_plugin_daemon_url=None,
             context=None,
+            dify_plugin_server_key=None,
         )
 
 

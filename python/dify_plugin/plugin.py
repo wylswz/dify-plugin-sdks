@@ -451,6 +451,7 @@ class Plugin(IOServer, Router):
             endpoint_id=endpoint_id,
             context=context,
             max_invocation_timeout=self.config.MAX_INVOCATION_TIMEOUT,
+            dify_plugin_server_key=self.config.DIFY_PLUGIN_SERVER_KEY,
         )
         response = self.dispatch(session, data)
         if response:

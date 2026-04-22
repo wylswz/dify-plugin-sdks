@@ -39,6 +39,11 @@ class DifyPluginEnv(BaseSettings):
     SERVERLESS_THREADS: int = Field(default=5, description="Serverless threads")
 
     DIFY_PLUGIN_DAEMON_URL: str = Field(default="http://localhost:5002", description="backwards invocation address")
+    DIFY_PLUGIN_SERVER_KEY: str | None = Field(
+        default=None,
+        description="X-Api-Key for POST /v2/invoke/backwards-invocation/submit-tool-interrupt-result (matches daemon SERVER_KEY); "
+        "injected for local runs",
+    )
 
     model_config = SettingsConfigDict(
         # read from dotenv format config file
